@@ -48,4 +48,14 @@ class MainModel extends Model
         return $result;
     }
 
+    public static function fetchUsersForEmail(){
+        return $likesCount = DB::table('users as u')
+            ->leftJoin('user_likes as ul', 'u.id', '=', 'ul.user_id')
+            ->selectRaw('count(ul.id) as likes_count, u.name')
+            ->where('ul.is_like', '=', 1)
+            ->groupBy('ul.user_id')
+            ->havingRaw('likes_count > 50')
+            ->get();
+    }
+
 }
